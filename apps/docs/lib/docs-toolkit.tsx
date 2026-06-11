@@ -29,8 +29,14 @@ import {
   defineGenerativeComponents,
   generativeUIToJSX,
 } from "@assistant-ui/react-generative-ui";
+import { NotepadToolUI } from "@/components/tool-ui/notepad";
 
 const weatherFormatSchema = z.enum(["fahrenheit", "celsius"]);
+
+const notepadSchema = z.object({
+  title: z.string().describe("A short title for the text."),
+  content: z.string().describe("The full plain text."),
+});
 
 type GeocodeLocationArgs = {
   query: string;
@@ -186,6 +192,16 @@ export default defineToolkit({
     render: GetWeatherToolUI,
   },
   present: generative.present({ display: "standalone" }),
+  notepad: {
+    description:
+      "Open a notepad with drafted text when the user asks for help writing " +
+      "something. The user can edit it; revise it later via `update_notepad` " +
+      "instead of opening a new one.",
+    parameters: notepadSchema,
+    execute: async () => ({ success: true as const }),
+    display: "standalone",
+    render: NotepadToolUI,
+  },
 });
 
 const WeatherCard = ({
