@@ -15,6 +15,7 @@ import { useRef, useState } from "react";
 import { z } from "zod";
 import {
   defineToolkit,
+  interactableTool,
   useAuiState,
   useScrollLock,
   type ToolCallMessagePartComponent,
@@ -29,7 +30,7 @@ import {
   defineGenerativeComponents,
   generativeUIToJSX,
 } from "@assistant-ui/react-generative-ui";
-import { NotepadToolUI } from "@/components/tool-ui/notepad";
+import { Notepad } from "@/components/tool-ui/notepad";
 
 const weatherFormatSchema = z.enum(["fahrenheit", "celsius"]);
 
@@ -192,16 +193,14 @@ export default defineToolkit({
     render: GetWeatherToolUI,
   },
   present: generative.present({ display: "standalone" }),
-  notepad: {
+  notepad: interactableTool({
     description:
-      "Open a notepad with drafted text when the user asks for help writing " +
-      "something. The user can edit it; revise it later via `update_notepad` " +
-      "instead of opening a new one.",
-    parameters: notepadSchema,
-    execute: async () => ({ success: true as const }),
-    display: "standalone",
-    render: NotepadToolUI,
-  },
+      "A notepad with drafted text that the user can read and edit. Open one " +
+      "when the user asks for help writing something; revise it later via " +
+      "`update_notepad` instead of opening a new one.",
+    stateSchema: notepadSchema,
+    render: (props) => <Notepad {...props} />,
+  }),
 });
 
 const WeatherCard = ({
