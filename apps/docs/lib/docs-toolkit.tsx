@@ -15,7 +15,7 @@ import { useRef, useState } from "react";
 import { z } from "zod";
 import {
   defineToolkit,
-  interactableTool,
+  unstable_interactableTool,
   useAuiState,
   useScrollLock,
   type ToolCallMessagePartComponent,
@@ -193,7 +193,7 @@ export default defineToolkit({
     render: GetWeatherToolUI,
   },
   present: generative.present({ display: "standalone" }),
-  notepad: interactableTool({
+  notepad: unstable_interactableTool({
     description:
       "A notepad with drafted text that the user can read and edit. Open one " +
       "when the user asks for help writing something; revise it later via " +
