@@ -344,9 +344,32 @@ function isUnstableName(name: string): boolean {
   return name.startsWith("unstable_") || name.startsWith("Unstable_");
 }
 
+const EXPORT_ORDER_BY_PAGE: Record<string, readonly string[]> = {
+  "tools/interactables": [
+    "unstable_Interactables",
+    "unstable_useInteractable",
+    "unstable_useInteractableState",
+    "unstable_useInteractableVersions",
+    "unstable_interactableTool",
+    "unstable_getInteractableSnapshots",
+    "unstable_formatInteractableSnapshot",
+    "unstable_getInteractableVersions",
+  ],
+  "tools/interactables-legacy": [
+    "Interactables",
+    "useAssistantInteractable",
+    "useInteractableState",
+  ],
+};
+
 function exportSortKey(item: ExportInfo): [number, string] {
-  if (isUnstableName(item.name)) return [1, item.name];
-  return [0, item.name];
+  const pageOrder = EXPORT_ORDER_BY_PAGE[`${item.section}/${item.page}`];
+  const pageIndex = pageOrder?.indexOf(item.name) ?? -1;
+  if (pageIndex !== -1) return [pageIndex, item.name];
+
+  const fallbackGroup = pageOrder ? pageOrder.length : 0;
+  if (isUnstableName(item.name)) return [fallbackGroup + 1, item.name];
+  return [fallbackGroup, item.name];
 }
 
 function sortExportsForPage(items: ExportInfo[]): ExportInfo[] {
@@ -651,7 +674,14 @@ function generatedImports({
 }
 
 const PAGE_ORDER_BY_SECTION: Partial<Record<ApiSection, readonly string[]>> = {
-  tools: ["toolkits", "component-tools", "rendering", "status"],
+  tools: [
+    "toolkits",
+    "component-tools",
+    "rendering",
+    "status",
+    "interactables",
+    "interactables-legacy",
+  ],
   "generative-ui": ["spec", "rendering"],
 };
 

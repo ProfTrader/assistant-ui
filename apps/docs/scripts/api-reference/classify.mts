@@ -287,6 +287,54 @@ function generativeUIRule(
   );
 }
 
+const LEGACY_INTERACTABLE_EXPORTS = new Set([
+  "useAssistantInteractable",
+  "AssistantInteractableProps",
+  "useInteractableState",
+  "Interactables",
+  "InteractableStateSchema",
+  "InteractablesState",
+  "InteractableDefinition",
+  "InteractableRegistration",
+  "InteractablesMethods",
+  "InteractablePersistedState",
+  "InteractablePersistenceAdapter",
+  "InteractablePersistenceStatus",
+  "InteractablesClientSchema",
+]);
+
+function interactablesRule(
+  input: ClassificationInput,
+): Classification | undefined {
+  const { name, kind } = input;
+  const isUnstableInteractable =
+    name.startsWith("unstable_") && name.toLowerCase().includes("interactable");
+  const isUnstableInteractableType =
+    name.startsWith("Unstable_") && name.includes("Interactable");
+
+  if (isUnstableInteractable || isUnstableInteractableType) {
+    return classification(
+      "tools",
+      "interactables",
+      supportingTypeRole(kind),
+      "feature:interactables",
+      "strong",
+      "unstable interactables API export",
+    );
+  }
+
+  if (LEGACY_INTERACTABLE_EXPORTS.has(name)) {
+    return classification(
+      "tools",
+      "interactables-legacy",
+      supportingTypeRole(kind),
+      "feature:interactables-legacy",
+      "strong",
+      "legacy interactables API export",
+    );
+  }
+}
+
 function kindRule(input: ClassificationInput): Classification | undefined {
   const { name, sourcePath } = input;
   let section: ApiSection | undefined;
@@ -363,6 +411,7 @@ const CLASSIFICATION_RULES: ClassificationRule[] = [
   modelContextRule,
   voiceRule,
   generativeUIRule,
+  interactablesRule,
   kindRule,
 ];
 
