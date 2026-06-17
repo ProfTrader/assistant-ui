@@ -1,5 +1,16 @@
 # @assistant-ui/react-langchain
 
+## 0.0.15
+
+### Patch Changes
+
+- [#4438](https://github.com/assistant-ui/assistant-ui/pull/4438) [`0efdfe2`](https://github.com/assistant-ui/assistant-ui/commit/0efdfe2cc2be54b23595e6483e29ed9abf7addd5) - feat(react-langchain): convert file content parts in messages ([@ShobhitPatra](https://github.com/ShobhitPatra))
+
+- [#4432](https://github.com/assistant-ui/assistant-ui/pull/4432) [`c44cec8`](https://github.com/assistant-ui/assistant-ui/commit/c44cec86650cdb4adcc667b90bb41e19ffc126ca) - feat(react-langchain): surface thread-loading state via isLoading ([@ShobhitPatra](https://github.com/ShobhitPatra))
+
+- Updated dependencies [[`68dfbaa`](https://github.com/assistant-ui/assistant-ui/commit/68dfbaa348fba7ccec251c63d0c5cc8765e42a64), [`fe24ad6`](https://github.com/assistant-ui/assistant-ui/commit/fe24ad645e292cc77d9bdda6b0c18ccd8be23096)]:
+  - @assistant-ui/core@0.2.18
+
 ## 0.0.14
 
 ### Patch Changes
